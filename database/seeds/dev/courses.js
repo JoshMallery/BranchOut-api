@@ -14,8 +14,8 @@
 
     let lessonPromises = course.lessons.map(lesson => {
       return createLesson(knex, {
-        lessons_title: lesson.lessons_title,
-        lessons_content: lesson.lessons_content,
+        lesson_title: lesson.lesson_title,
+        lesson_content: lesson.lesson_content,
         courses_id: courseId[0].id
       })
     });
@@ -31,7 +31,7 @@
   await knex('courses').del()
 
   let coursePromises = coursesData.map( course => {
-    return createCourse(knex, paper);
+    return createCourse(knex, course);
   });
 
     return Promise.all(coursePromises);
