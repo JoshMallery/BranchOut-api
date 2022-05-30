@@ -3,13 +3,13 @@
  * @returns { Promise<void> }
  */
  const coursesData = require('../../data/coursesData');
-  // Deletes ALL existing entries
     const createCourse = async (knex, course) => {
       const courseId = await knex('courses').insert({
+
         title: course.title,
         author: course.author,
         overview: course.overview,
-        lessons: course.lessons
+        lessons: JSON.stringify(course.lessons)
       }, 'id');
 
     let lessonPromises = course.lessons.map(lesson => {
@@ -33,6 +33,7 @@
   let coursePromises = coursesData.map( course => {
     return createCourse(knex, course);
   });
+
 
     return Promise.all(coursePromises);
   } catch (error) {
