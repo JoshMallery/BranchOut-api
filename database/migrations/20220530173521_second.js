@@ -3,6 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
+  console.log('i ran!!! in the 2nd migration')
   return knex.schema
     .createTable('courses', function(table) {
       table.increments('id').primary();

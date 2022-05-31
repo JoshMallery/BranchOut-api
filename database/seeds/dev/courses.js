@@ -9,8 +9,7 @@
 
         title: course.title,
         author: course.author,
-        overview: course.overview,
-        lessons: JSON.stringify(course.lessons)
+        overview: course.overview
       }, 'id');
       //
       // console.log(course.lessons)
