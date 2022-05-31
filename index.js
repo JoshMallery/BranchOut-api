@@ -13,10 +13,56 @@ app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on http://localhost:${app.get('port')}`)
 })
 
+// app.get('/api/v1/courses', async (req, res) => {
+//   try{
+//     var courses = await database('courses').join('lessons','courses.id', '=', 'lessons.courses_id').select();
+//
+//     var cleanedCourses = await courses.map(course => {
+//         return {
+//           title: course.title,
+//           author:course.author,
+//           overview: course.overview,
+//           lessons: [
+//             {lesson_title: course.lesson_title,lesson_content: course.lesson_content}
+//           ],
+//           courses_id: courses.courses.id
+//         };
+//     });
+//     res.status(200).json(cleanedCourses)
+//   } catch (error){
+//     res.status(500).json({error});
+//   }
+//   console.log(cleanedCourses)
+// })
+
 app.get('/api/v1/courses', async (req, res) => {
   try{
-    const courses = await database('courses').join('lessons','courses.id', '=', 'lessons.courses_id').select();
-    res.status(200).json(courses)
+    const courses = await database('courses').join('lessons','courses.id', '=', 'lessons.courses_id').select(); //consider refactor
+    //get courses
+    //get lessons
+      //two data set array iterator problem
+    //with every course make an object with an empty lessons array// is this a .map?
+    //with every lesson push it to the corresponding lessons array on that course// is this a .forEach that pushes?
+
+    const cleanedCourses = courses
+      .reduce((acc,cur) => {
+        if(!acc.find(each => cur.title === each.title)) {
+          acc.push({
+            title: cur.title,
+            author: cur.author,
+            overview: cur.overview,
+            lessons: [
+              {lesson_title: cur.lesson_title,lesson_content: cur.lesson_content}
+            ],
+            courses_id: cur.courses_id
+          })
+        } else {
+          acc[acc.findIndex(each => cur.title === each.title)].lessons.unshift({lesson_title: cur.lesson_title,lesson_content: cur.lesson_content})
+        }
+        return acc
+      },[])
+
+    res.status(200).json(cleanedCourses)
   } catch (error){
     res.status(500).json({error});
   }
@@ -24,15 +70,15 @@ app.get('/api/v1/courses', async (req, res) => {
 
 app.delete('/api/v1/courses', async (req, res) => {
 const id = req.body.id
-console.log(id)
 
   try{
+    const courseToRemove = await database('courses').where('id', id).select();
     const lessons = await database('lessons').where('courses_id', id).del();
     const courses = await database('courses').where('id', id).del();
 
-    res.status(204).json('Successful Deletion')
+    res.status(200).json({deletedCourse:courseToRemove})
   } catch (error){
-    res.status(500).json({error});
+    res.status(404).json({error});
   }
 })
 
@@ -84,7 +130,7 @@ app.post('/api/v1/lessons', async(req, res) => {
 
   try{
     const id = await database('lessons').insert(lesson, "id");
-    res.status(201).json({id})
+    res.status(201).json(id)
   } catch (error){
     res.status(500).json({error})
   }
