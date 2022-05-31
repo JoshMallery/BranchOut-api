@@ -4,6 +4,7 @@
  */
  const coursesData = require('../../data/coursesData');
     const createCourse = async (knex, course) => {
+
       const courseId = await knex('courses').insert({
 
         title: course.title,
@@ -11,6 +12,8 @@
         overview: course.overview,
         lessons: JSON.stringify(course.lessons)
       }, 'id');
+      //
+      // console.log(course.lessons)
 
     let lessonPromises = course.lessons.map(lesson => {
       return createLesson(knex, {
@@ -31,6 +34,7 @@
   await knex('courses').del()
 
   let coursePromises = coursesData.map( course => {
+
     return createCourse(knex, course);
   });
 

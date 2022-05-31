@@ -31,11 +31,29 @@ app.get('/api/v1/lessons', async (req, res) => {
   }
 })
 
-app.get('/api/v1/lessons/:courses_id', async (req, res) => {
+app.get('/api/v1/:courses_id/lessons', async (req, res) => {
   try{
     const lessons = await database('lessons').where('courses_id', req.params.courses_id).select();
     res.status(200).json(lessons)
   } catch (error){
     res.status(500).json({error});
+  }
+})
+
+app.post('/api/v1/courses', async(req, res) => {
+  const course = req.body;
+  for(let requiredParameter of ['title', 'author', 'overview', 'lessons']){
+      if(!course[requiredParameter]){
+        return res
+          .status(422)
+          .send({ error: `Expected format: {title: <String>, author: <String>, overview: <String>, lessons: <Array>}. Youre missing a "${requiredParameter}" property.`})
+      }
+  }
+
+  try{
+    const id = await database('courses').insert(course, "id");
+    res.status(201).json({id})
+  } catch (error){
+    res.status(500).json({error})
   }
 })
