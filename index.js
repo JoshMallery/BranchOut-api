@@ -3,8 +3,10 @@ const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 app.use(express.json());
+app.use(cors());
 
 app.set('port', process.env.NODE_ENV || 3001);
 app.locals.title = "Branch out API"

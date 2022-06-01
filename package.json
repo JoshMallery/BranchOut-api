@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/JoshMallery/BranchOut-api#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.1",
     "knex": "^2.1.0",
     "pg": "^8.7.3"
