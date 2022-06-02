@@ -4,14 +4,14 @@
  */
 exports.up = function(knex) {
   return knex.schema
-    .table('courses', function(table) {
+    .createTable('courses', function(table) {
       table.increments('id').primary();
       table.string('title');
       table.string('author');
       table.string('overview');
       table.json('lessons');
     })
-    .table('lessons', function(table) {
+    .createTable('lessons', function(table) {
       table.increments('id').primary();
       table.string('lesson_title');
       table.text('lesson_content');
