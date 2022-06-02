@@ -15,36 +15,9 @@ app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on http://localhost:${app.get('port')}`)
 })
 
-// app.get('/api/v1/courses', async (req, res) => {
-//   try{
-//     var courses = await database('courses').join('lessons','courses.id', '=', 'lessons.courses_id').select();
-//
-//     var cleanedCourses = await courses.map(course => {
-//         return {
-//           title: course.title,
-//           author:course.author,
-//           overview: course.overview,
-//           lessons: [
-//             {lesson_title: course.lesson_title,lesson_content: course.lesson_content}
-//           ],
-//           courses_id: courses.courses.id
-//         };
-//     });
-//     res.status(200).json(cleanedCourses)
-//   } catch (error){
-//     res.status(500).json({error});
-//   }
-//   console.log(cleanedCourses)
-// })
-
 app.get('/api/v1/courses', async (req, res) => {
   try{
     const courses = await database('courses').join('lessons','courses.id', '=', 'lessons.courses_id').select(); //consider refactor
-    //get courses
-    //get lessons
-      //two data set array iterator problem
-    //with every course make an object with an empty lessons array// is this a .map?
-    //with every lesson push it to the corresponding lessons array on that course// is this a .forEach that pushes?
 
     const cleanedCourses = courses
       .reduce((acc,cur) => {
@@ -137,22 +110,3 @@ app.post('/api/v1/lessons', async(req, res) => {
     res.status(500).json({error})
   }
 })
-
-// app.post('/api/v1/lessons', async(req, res) => {
-//   const lesson = req.body;
-//   for(let requiredParameter of ['lesson_title', 'lesson_content', 'courses_id']){
-//       if(!lesson[requiredParameter]){
-//         return res
-//           .status(422)
-//           .send({ error: `Expected format:  You're missing a "${requiredParameter}" property.`})
-//       }
-//   }
-//
-//   try{
-//     const prev = await database('courses').where('id', lesson['courses_id']).select('lessons')
-//     const id = await database('courses').where('id', lesson['courses_id']).select('lessons').update({lessons:{lesson,...prev}})
-//     res.status(201).json({id})
-//   } catch (error){
-//     res.status(500).json({error})
-//   }
-// })
