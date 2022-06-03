@@ -87,7 +87,7 @@ app.post('/api/v1/courses', async(req, res) => {
 
   try{
     const id = await database('courses').insert(course, "id");
-    res.status(201).json({id})
+    res.status(201).json(id)
   } catch (error){
     res.status(500).json({error})
   }
