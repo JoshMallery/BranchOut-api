@@ -75,6 +75,15 @@ app.get('/api/v1/:courses_id/lessons', async (req, res) => {
   }
 })
 
+app.get('/api/v1/:courses_id', async (req, res) => {
+  try{
+    const course = await database('courses').where('courses_id', req.params.courses_id).select();
+    res.status(200).json(course)
+  } catch (error){
+    res.status(500).json({error});
+  }
+})
+
 app.post('/api/v1/courses', async(req, res) => {
   const course = req.body;
   for(let requiredParameter of ['title', 'author', 'overview']){
