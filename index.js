@@ -17,7 +17,7 @@ app.listen(app.get('port'), () => {
 
 app.get('/api/v1/courses', async (req, res) => {
   try{
-    const courses = await database('courses').join('lessons','courses.id', '=', 'lessons.courses_id').select(); //consider refactor
+    const courses = await database('courses').join('lessons','courses.id', '=', 'lessons.courses_id').select();
 
     const cleanedCourses = courses
       .reduce((acc,cur) => {
@@ -77,8 +77,27 @@ app.get('/api/v1/:courses_id/lessons', async (req, res) => {
 
 app.get('/api/v1/:courses_id', async (req, res) => {
   try{
-    const course = await database('courses').join('lessons','courses.id', '=', 'lessons.courses_id').where('id', req.params.courses_id).select();
-    res.status(200).json(course)
+    const courses = await database('courses').join('lessons','courses.id', '=', 'lessons.courses_id').select();
+
+    const cleanedCourse = courses
+      .filter(course => course.id === req.params.courses_id)
+      .reduce((acc,cur) => {
+        if(!acc.find(each => cur.title === each.title)) {
+          acc.push({
+            title: cur.title,
+            author: cur.author,
+            overview: cur.overview,
+            lessons: [
+              {lesson_title: cur.lesson_title,lesson_content: cur.lesson_content}
+            ],
+            courses_id: cur.courses_id
+          })
+        } else {
+          acc[acc.findIndex(each => cur.title === each.title)].lessons.push({lesson_title: cur.lesson_title,lesson_content: cur.lesson_content})
+        }
+        return acc
+      },[])
+    res.status(200).json(cleanedCourse)
   } catch (error){
     res.status(500).json({error});
   }
