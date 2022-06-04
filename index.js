@@ -77,7 +77,7 @@ app.get('/api/v1/:courses_id/lessons', async (req, res) => {
 
 app.get('/api/v1/:courses_id', async (req, res) => {
   try{
-    const course = await database('courses').where('id', req.params.courses_id).select();
+    const course = await database('courses').where('id', req.params.courses_id).join('lessons','courses.id', '=', 'lessons.courses_id').select();
     res.status(200).json(course)
   } catch (error){
     res.status(500).json({error});
