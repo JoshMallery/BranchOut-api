@@ -32,7 +32,7 @@ app.get('/api/v1/courses', async (req, res) => {
             courses_id: cur.courses_id
           })
         } else {
-          acc[acc.findIndex(each => cur.title === each.title)].lessons.unshift({lesson_title: cur.lesson_title,lesson_content: cur.lesson_content})
+          acc[acc.findIndex(each => cur.title === each.title)].lessons.push({lesson_title: cur.lesson_title,lesson_content: cur.lesson_content})
         }
         return acc
       },[])
