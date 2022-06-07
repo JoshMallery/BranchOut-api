@@ -4,15 +4,11 @@
  */
  const coursesData = require('../../data/coursesData');
     const createCourse = async (knex, course) => {
-
       const courseId = await knex('courses').insert({
-
         title: course.title,
         author: course.author,
         overview: course.overview
       }, 'id');
-      //
-      // console.log(course.lessons)
 
     let lessonPromises = course.lessons.map(lesson => {
       return createLesson(knex, {
@@ -31,13 +27,9 @@
   try {
   await knex('lessons').del()
   await knex('courses').del()
-
   let coursePromises = coursesData.map( course => {
-
     return createCourse(knex, course);
   });
-
-
     return Promise.all(coursePromises);
   } catch (error) {
     console.log(`Error seeding data: ${error}`);
