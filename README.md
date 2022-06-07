@@ -14,19 +14,23 @@ If you are an instructor who struggles with an endless amount of paper documents
 We used Postman and Postico to test the routes our data would take to make sure it was secure before offering the service to our valued instructors.
 
 ### Testing a GET request via Postman:
-![branchOut GET request]()
+![branchOut GET request](https://user-images.githubusercontent.com/96502923/172272933-37454986-4323-4902-999f-688fae2d4d2e.png)
+
 
 ### Testing a POST request via Postman:
-![branchOut POST request]()
+![branchOut POST request](https://user-images.githubusercontent.com/96502923/172272809-36a803f4-c852-4984-acd2-44f8960d7f03.png)
+
 
 ### Viewing our courses seed data via Postico:
-![Course seed data]()
+![Course seed data](https://user-images.githubusercontent.com/96502923/172272651-84f75e4e-1698-4fc2-99ce-77343f956cb0.png)
+
 
 ### Viewing our lessons seed data via Postico:
-![Lesson seed data]()
+![Lesson seed data](https://user-images.githubusercontent.com/96502923/172273081-eafdb63e-6330-4861-ad06-a3d30fbe9048.png)
+
 
 ### Error Handling:
-![Error Handling]()
+![Error Handling](https://user-images.githubusercontent.com/96502923/172273135-eb63da7d-0055-4f35-8b49-d4efba86d9d3.png)
 
 ## Express
 
